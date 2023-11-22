@@ -1,4 +1,4 @@
-package study.springrestapi.event;
+package study.springrestapi.events;
 
 import lombok.*;
 
