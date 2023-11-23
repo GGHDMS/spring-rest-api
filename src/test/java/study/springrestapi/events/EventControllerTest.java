@@ -59,7 +59,7 @@ public class EventControllerTest {
     }
 
     @Test
-    void createEvent_BadRequest() throws Exception {
+    void createEvent_Bad_Request() throws Exception {
         Event event = Event.builder()
                 .id(100)
                 .name("Spring")
@@ -83,6 +83,18 @@ public class EventControllerTest {
                         .content(objectMapper.writeValueAsBytes(event))
                 )
                 .andDo(print())
+                .andExpect(status().isBadRequest())
+        ;
+    }
+
+    @Test
+    void createEvent_Bad_Request_Empty_Input() throws Exception {
+        EventDto eventDto = EventDto.builder().build();
+
+        mockMvc.perform(post("/api/events")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(eventDto))
+                )
                 .andExpect(status().isBadRequest())
         ;
     }
