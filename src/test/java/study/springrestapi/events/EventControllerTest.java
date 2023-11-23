@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -23,6 +25,9 @@ public class EventControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @MockBean
+    EventRepository eventRepository;
 
     @Test
     void createEvent() throws Exception {
@@ -38,6 +43,8 @@ public class EventControllerTest {
                 .location("강남역 D2 스타텁 팩토리")
                 .build();
 
+        event.setId(10);
+        given(eventRepository.save(event)).willReturn(event);
 
         mockMvc.perform(post("/api/events")
                         .contentType(MediaType.APPLICATION_JSON)
