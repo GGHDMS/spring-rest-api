@@ -27,12 +27,20 @@ public class Event {
     private int basePrice; // (optional)
     private int maxPrice; // (optional)
     private int limitOfEnrollment;
-    private Boolean offline;
-    private Boolean free;
+    private boolean offline;
+    private boolean free;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus = EventStatus.DRAFT;
 
+    public void update() {
+        free = basePrice == 0 && maxPrice == 0;
 
+        if (location == null || location.isBlank()) {
+            offline = false;
+        } else {
+            offline = true;
+        }
+    }
 }
