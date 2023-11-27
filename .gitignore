@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/gradle,macos,intellij+all,java
 # Edit at https://www.toptal.com/developers/gitignore?templates=gradle,macos,intellij+all,java
 
+# REST Docs
+src/main/resources/static/docs/index.html
 
 #SonarLint
 *.iml
