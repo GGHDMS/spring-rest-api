@@ -11,10 +11,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import study.springrestapi.commons.ErrorsResource;
 
 import javax.validation.Valid;
@@ -63,6 +60,17 @@ public class EventController {
         var model = assembler.toModel(page, EventResource::new);
         model.add(Link.of("/docs/index.html#resources-events-list", "profile"));
         return ResponseEntity.ok(model);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getEvent(@PathVariable Integer id) {
+        return eventRepository.findById(id)
+                .map(event -> {
+                    EventResource eventResource = new EventResource(event);
+                    eventResource.add(Link.of("/docs/index.html#resources-events-get", "profile"));
+                    return ResponseEntity.ok(eventResource);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     private ResponseEntity badRequest(Errors errors) {
